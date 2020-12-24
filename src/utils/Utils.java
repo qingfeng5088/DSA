@@ -17,4 +17,17 @@ public class Utils {
         Instant end = Instant.now();
         System.out.println(Duration.between(start, end).toMillis() + " ms");
     }
+
+    //length表示生成字符串的长度
+    public static String getRandomString(int length) {
+        StringBuffer sb = new StringBuffer();
+        if(length <= 0 ) return sb.toString();
+        String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(base.length());
+            sb.append(base.charAt(number));
+        }
+        return sb.toString();
+    }
 }
