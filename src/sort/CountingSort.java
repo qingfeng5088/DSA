@@ -4,63 +4,64 @@ import utils.Utils;
 
 import java.util.Arrays;
 
+/**
+ * 计数排序
+ */
 public class CountingSort {
 
-    public static void mergeSort(int[] a, int p, int r) {
-        if (p >= r) {
-            return;
+    public static void countingSort(int[] a) {
+        int max = getMax(a);
+        int[] c = new int[max + 1];//生成0～max（max+1）个数组
+        // 给c数组赋值，下标对应的数字表示该数字在整个数组中的个数
+        for (int i = 0; i < a.length; i++) {
+            c[a[i]]++;
         }
 
-        int q = (p + r) / 2;
-        mergeSort(a, p, q);
-        mergeSort(a, q + 1, r);
-        merge(a, p, q, q + 1, r);
+        //对c数组顺序求和
+        for (int i = 1; i < c.length; i++) {
+            c[i] += c[i - 1];
+        }
 
+        //准备一个临时数组，存放排序的数据
+        int r[] = new int[a.length];
+
+        // 倒序计算每个元素对应的位置
+        for (int i = a.length - 1; i >= 0; i--) {
+            r[c[a[i]] - 1] = a[i];
+            c[a[i]]--;
+        }
+
+        // 将结果拷贝给a数组
+        for (int i = 0; i < r.length; i++) {
+            a[i] = r[i];
+        }
     }
 
-    private static void merge(int[] a, int p, int q, int i, int r) {
-        int start = p;
-        int maxlen = (q - p + 1) + (r - i + 1);
-
-        int t[] = new int[maxlen];
-        int k = 0;
-        while (p <= q && i <= r) {
-            if (a[p] > a[i]) {
-                t[k++] = a[i];
-                i++;
-            } else {
-                t[k++] = a[p];
-                p++;
+    private static int getMax(int[] a) {
+        if (a.length <= 0) {
+            return 0;
+        }
+        int max = a[0];
+        for (int i = 1; i < a.length; i++) {
+            if (a[i] > max) {
+                max = a[i];
             }
         }
 
-        if (p <= q) {
-            for (int x = p; x <= q; x++) {
-                t[k++] = a[x];
-            }
-        } else {
-            for (int x = i; x <= r; x++) {
-                t[k++] = a[x];
-            }
-        }
-
-        for (int i1 = 0; i1 < t.length; i1++) {
-            a[start++] = t[i1];
-        }
+        return max;
     }
 
     public static void main(String[] args) {
-      //  int[] a = {11, 8, 3, 9, 7, 1, 2, 5, 4, 15, -6, 58, 23};
-
+        //int[] a = {2, 5, 3, 0, 2, 3, 0, 3};
         int count = 100000;
         int[] a = new int[count];
 
         for (int i = 0; i < count; i++) {
-            a[i] = Utils.getRandomInt(count);
+            a[i] = Utils.getRandomInt(100);
         }
 
 
-        mergeSort(a, 0, a.length - 1);
+        countingSort(a);
 
         System.out.println(Arrays.toString(a));
     }
