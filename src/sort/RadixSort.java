@@ -19,6 +19,7 @@ public class RadixSort {
             Comparator<String> cpr = Comparator.comparing(x -> x.substring(x.length() - finalI, x.length() - finalI + 1));
             MergeSortComm.mergeSort(a, 0, a.length - 1, cpr);
         }
+    }
 
     public static void main(String[] args) {
         String[] a = new String[100000];

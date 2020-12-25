@@ -5,6 +5,9 @@ import utils.Utils;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * 归并排序 通用类
+ */
 public class MergeSortComm {
 
     public static <E> void mergeSort(E[] a, int p, int r, Comparator<E> cpr) {
