@@ -14,7 +14,7 @@ public class SearchIP {
     private static final Map<Long, Integer> IPs = new HashMap<>();
 
     /**
-     * 输入IP找归属地，输入c推出
+     * 输入IP找归属地，输入c退出
      *
      * @param args
      * @throws IOException
