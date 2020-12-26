@@ -146,7 +146,6 @@ public class SkipList {
                     start0 = start0.next[0];
                 }
                 System.out.printf("->%-2d",next.data);
-               // System.out.printf("(%d,%d)",x,y);
                 start0 = start0.next[0];
 
                 next = next.next[i];
