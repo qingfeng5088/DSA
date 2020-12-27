@@ -418,7 +418,10 @@ public class AVLTree<T extends Comparable<T>> {
     }
 
     public void printTree() {
-        if (mRoot == null) System.out.println("EMPTY!");
+        if (mRoot == null) {
+            System.out.println("EMPTY!");
+            return;
+        }
         // 得到树的深度
         int treeDepth = getTreeDepth(mRoot);
         SetGaps(treeDepth);
@@ -537,9 +540,9 @@ public class AVLTree<T extends Comparable<T>> {
         System.out.printf("== 树的详细信息: \n");
         tree.print();
 
-        i = 8;
-        System.out.printf("\n== 删除根节点: %d", i);
-        tree.remove(i);
+//        i = 8;
+//        System.out.printf("\n== 删除根节点: %d", i);
+//        tree.remove(i);
 
         System.out.printf("\n== 高度: %d", tree.height());
         System.out.printf("\n== 中序遍历: ");
@@ -549,6 +552,13 @@ public class AVLTree<T extends Comparable<T>> {
 
         System.out.println("------------------------打印树状结构-----------------------");
         tree.printTree();
+
+        for (int i1 = 0; i1 < arr.length; i1++) {
+            System.out.println("== 删除节点:" + arr[i1]);
+            tree.remove(arr[i1]);
+            System.out.printf("\n== 树的详细信息: \n");
+            tree.printTree();
+        }
 
         // 销毁二叉树
         tree.destroy();

@@ -706,7 +706,10 @@ public class RBTree<T extends Comparable<T>> {
     }
 
     public void printTree() {
-        if (mRoot == null) System.out.println("EMPTY!");
+        if (mRoot == null) {
+            System.out.println("EMPTY!");
+            return;
+        }
         // 得到树的深度
         int treeDepth = getTreeDepth(mRoot);
         SetGaps(treeDepth);

@@ -15,7 +15,7 @@ public class RBTreeTest {
     private static int count = 0;
     private static Integer a[] = {10, 40, 30, 60, 90, 70, 20, 50, 80, 7, 9, 18, 17, 15, 13, 14, 8, 12, 21, 45, 68, 74, 88};
     private static final boolean mDebugInsert = true;    // "插入"动作的检测开关(false，关闭；true，打开)
-    private static final boolean mDebugDelete = false;    // "删除"动作的检测开关(false，关闭；true，打开)
+    private static final boolean mDebugDelete = true;    // "删除"动作的检测开关(false，关闭；true，打开)
 
     public static void main(String[] args) {
         int i, ilen = a.length;
@@ -61,7 +61,7 @@ public class RBTreeTest {
 
                 System.out.printf("== 删除节点: %d\n", a[i]);
                 System.out.printf("== 树的详细信息: \n");
-                tree.print();
+                tree.printTree();
                 System.out.printf("\n");
             }
         }
@@ -72,6 +72,11 @@ public class RBTreeTest {
         // 销毁二叉树
         tree.clear();
 
+        //test();
+
+    }
+
+    private static void test() {
         System.out.println("=================性能测试=========================");
         count = 4600_0000;
         System.out.println("-----------------------条数据准备时间:-----------------------:");
@@ -97,10 +102,7 @@ public class RBTreeTest {
 
         System.out.println("-----红黑树RBTree----" + a.length + "条数据删除时间:----------:");
         Utils.countTime(RBTreeTest::RBTreeDelPerformanceTest);
-
     }
-
-    static  int del[];
 
     static void performanceTest() {
         //  a = new int[count];
