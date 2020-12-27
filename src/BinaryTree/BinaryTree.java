@@ -46,11 +46,12 @@ public class BinaryTree<E> {
         if (root == null) System.out.println("EMPTY!");
         // 得到树的深度
         int treeDepth = getTreeDepth(root);
+        SetGaps(treeDepth);
 
         // 最后一行的宽度为2的（n - 1）次方乘3，再加1
         // 作为整个二维数组的宽度
         int arrayHeight = treeDepth * 2 - 1;
-        int arrayWidth = (2 << (treeDepth - 2)) * 3+ 1;
+        int arrayWidth = (2 << (treeDepth - 2)) * 6;
         // 用一个字符串数组来存储每个位置应显示的元素
         String[][] res = new String[arrayHeight][arrayWidth];
         // 对数组进行初始化，默认为一个空格
@@ -59,6 +60,7 @@ public class BinaryTree<E> {
                 res[i][j] = " ";
             }
         }
+
 
         // 从根节点开始，递归处理整个树
         // res[0][(arrayWidth + 1)/ 2] = (char)(root.val + '0');
@@ -77,30 +79,51 @@ public class BinaryTree<E> {
         }
     }
 
+    int[] gaps = null;
+
+    void SetGaps(int treeDepth) {
+        gaps = new int[treeDepth];
+
+        for (int i = 0; i < treeDepth - 1; i++) {
+            int arrayWidth = (2 << (treeDepth - 2 - i)) * 6;
+            int rootlet = (arrayWidth / 2);
+            gaps[i] = rootlet / 4;
+        }
+
+        gaps[gaps.length - 2] = 2;
+        gaps[gaps.length - 1] = 1;
+    }
 
     private void writeArray(Node<E> currNode, int rowIndex, int columnIndex, String[][] res, int treeDepth) {
         // 保证输入的树不为空
         if (currNode == null) return;
+        if (columnIndex > res[0].length - 1) return;
+
         // 先将当前节点保存到二维数组中
         res[rowIndex][columnIndex] = String.valueOf(currNode.getData());
 
         // 计算当前位于树的第几层
         int currLevel = ((rowIndex + 1) / 2);
         // 若到了最后一层，则返回
-        if (currLevel == treeDepth) return;
+        if (currLevel >= treeDepth) return;
         // 计算当前行到下一行，每个元素之间的间隔（下一行的列索引与当前元素的列索引之间的间隔）
-        int gap = treeDepth - currLevel - 1;
+        if (columnIndex < 3) return;
+
+        int gap = gaps[currLevel];
 
         // 对左儿子进行判断，若有左儿子，则记录相应的"/"与左儿子的值
         if (currNode.getLeft() != null) {
             res[rowIndex + 1][columnIndex - gap] = "/";
-            writeArray(currNode.getLeft(), rowIndex + 2, columnIndex - gap * 2+1 , res, treeDepth);
+            int d = (gap == 2 ? 3 : gap * 2);
+            writeArray(currNode.getLeft(), rowIndex + 2, columnIndex - d, res, treeDepth);
         }
 
         // 对右儿子进行判断，若有右儿子，则记录相应的"\"与右儿子的值
         if (currNode.getRight() != null) {
             res[rowIndex + 1][columnIndex + gap] = "\\";
-            writeArray(currNode.getRight(), rowIndex + 2, columnIndex + gap * 2, res, treeDepth);
+
+            int d = (gap == 2 ? 3 : gap * 2);
+            writeArray(currNode.getRight(), rowIndex + 2, columnIndex + d, res, treeDepth);
         }
 
     }
@@ -243,10 +266,19 @@ public class BinaryTree<E> {
         bt.addLeft(left12, "J");
         bt.addRight(left12, "K");
 
+        Node<String> left121 = left12.getRight();
+        bt.addLeft(left121, "R");
+        bt.addRight(left121, "SSS");
+
 
         Node<String> right11 = right1.getLeft();
         bt.addLeft(right11, "L");
         bt.addRight(right11, "M");
+
+        Node<String> right111= right11.getLeft();
+        bt.addLeft(right111, "TT");
+        bt.addRight(right111, "UUU");
+
 
         Node<String> right12 = right1.getRight();
         bt.addLeft(right12, "N");
