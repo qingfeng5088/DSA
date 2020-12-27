@@ -8,7 +8,7 @@ package BinaryTree;
  */
 public class RBTreeTest {
 
-    private static final int a[] = {10, 40, 30, 60, 90, 70, 20, 50, 80, 7, 9, 18, 17, 15, 13, 14,8,12,21,45,68,74,88};
+    private static final int a[] = {10, 40, 30, 60, 90, 70, 20, 50, 80, 7, 9, 18, 17, 15, 13, 14, 8, 12, 21, 45, 68, 74, 88};
     private static final boolean mDebugInsert = true;    // "插入"动作的检测开关(false，关闭；true，打开)
     private static final boolean mDebugDelete = false;    // "删除"动作的检测开关(false，关闭；true，打开)
 
