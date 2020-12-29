@@ -92,7 +92,5 @@ public class Heap<T extends Comparable<T>> {
             System.out.println(r);
             System.out.println(heap);
         }
-
-
     }
 }

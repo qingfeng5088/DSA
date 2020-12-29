@@ -21,7 +21,7 @@ public class Utils {
     //length表示生成字符串的长度
     public static String getRandomString(int length) {
         StringBuffer sb = new StringBuffer();
-        if(length <= 0 ) return sb.toString();
+        if (length <= 0) return sb.toString();
         String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();
         for (int i = 0; i < length; i++) {
@@ -29,5 +29,10 @@ public class Utils {
             sb.append(base.charAt(number));
         }
         return sb.toString();
+    }
+
+    public static int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 }
