@@ -255,7 +255,7 @@ public class GraphCom<E> { // 无向图
         gp.addEdge("M", "P");
         gp.addEdge("G", "I");
 
-        String s = "A", t = "I";
+        String s = "A", t = "P";
 
         System.out.println("------从" + s + "->" + t + "的广度优先遍历----");
         gp.bfs(s, t);
@@ -265,7 +265,7 @@ public class GraphCom<E> { // 无向图
         gp.dfs(s, t);
 
 
-        int de = 5;
+        int de = 4;
         System.out.println();
         System.out.println("----------求A的" + de + "度好友:--（广度优先实现）---");
         System.out.println(gp.degreeBybfs("A", de));
