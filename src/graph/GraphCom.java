@@ -1,13 +1,17 @@
 package graph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * 图
- *
+ * <p>
  * 广度优先搜索（ BFS ）
  * 广度优先搜索（ Breadth-First-Search ），我们平常都把简称为 BFS 。直观地讲，它其实就是一种 “ 地毯式 ” 层层推进的搜索策略，即先查找离起始顶点最近的，然后
  * 是次近的，依次往外搜索。
+ *
  * @param <E>
  */
 public class GraphCom<E> { // 无向图
@@ -51,7 +55,6 @@ public class GraphCom<E> { // 无向图
 
         while (queue.size() != 0) {
             Vertex<E> w = queue.poll();
-
             for (int i = 0; i < w.edgeList.size(); i++) {
                 Edge<E> q = w.edgeList.get(i);
                 if (!q.vertex.visited) {
@@ -59,6 +62,7 @@ public class GraphCom<E> { // 无向图
 
                     if (q.vertex.label.equals(t)) {
                         print(vs, q.vertex);
+                        clear(s);
                         return;
                     }
                     q.vertex.visited = true;
@@ -68,18 +72,121 @@ public class GraphCom<E> { // 无向图
         }
     }
 
-    private void print(Vertex<E> s, Vertex<E> t) { // 递归打印s->t的路径
-        List<E> l = new ArrayList<>();
-        while (!t.previousVertex.label.equals(s.label)) {
-            l.add(t.label);
-            t = t.previousVertex;
+    public void dfs(E s, E t) {
+        if (s.equals(t)) return;
+        Vertex<E> vs = get(s);
+        Vertex<E> vt = get(t);
+        if (vs == null || vt == null) return;
+        vs.visited = true;
+
+        Vertex<E> next = vs;
+        while (vt != next) {
+            Edge<E> nextEdge = next.edgeList.stream().filter(x -> !x.vertex.visited).findFirst().orElse(null);
+            if (nextEdge != null) {
+                nextEdge.vertex.previousVertex = next;
+                next = nextEdge.vertex;
+                next.visited = true;
+            } else {
+                next = next.previousVertex;
+            }
         }
 
-        l.add(t.label);
-        l.add(s.label);
+        print(vs, vt);
+        clear(s);
+    }
 
-        Collections.reverse(l);
-        System.out.println(l);
+    public void clear(E s) {
+        Vertex<E> vs = get(s);
+        if (vs == null) return;
+
+        Queue<Vertex<E>> queue = new LinkedList<>();
+        queue.add(vs);
+
+        while (queue.size() != 0) {
+            Vertex<E> w = queue.poll();
+            for (int i = 0; i < w.edgeList.size(); i++) {
+                Edge<E> q = w.edgeList.get(i);
+                if (q.vertex.visited) {
+                    q.vertex.previousVertex = null;
+                    q.vertex.degree = 0;
+                    q.vertex.visited = false;
+                    queue.add(q.vertex);
+                }
+            }
+        }
+    }
+
+
+    private void print(Vertex<E> s, Vertex<E> t) { // 递归打印s->t的路径
+        if (!s.label.equals(t.label)) {
+            print(s, t.previousVertex);
+        }
+
+        System.out.print(t.label + " ");
+    }
+
+    public List<Vertex<E>> degreeBybfs(E s, int d) {
+        List<Vertex<E>> retList = new ArrayList<>();
+        Vertex<E> vs = get(s);
+        if (vs == null) return null;
+
+        Queue<Vertex<E>> queue = new LinkedList<>();
+        queue.add(vs);
+        while (!queue.isEmpty()) {
+            vs = queue.poll();
+            vs.visited = true;
+            Vertex<E> finalVs = vs;
+
+            vs.edgeList.forEach(x -> {
+                if (!x.vertex.visited) {
+                    queue.add(x.vertex);
+                    x.vertex.visited = true;
+
+                    int de = finalVs.degree + 1;
+                    x.vertex.degree = de;
+                    if (de <= d && !retList.contains(x.vertex)) {
+                        retList.add(x.vertex);
+                        x.vertex.previousVertex = finalVs;
+                    }
+                }
+            });
+        }
+        clear(s);
+        return retList;
+    }
+
+    public List<Vertex<E>> degreeBydfs(E s, int d) {
+        List<Vertex<E>> retList = new ArrayList<>();
+
+        Vertex<E> vs = get(s);
+        if (vs == null) return null;
+        vs.visited = true;
+
+        Vertex<E> next = vs;
+        while (null != next) {
+            Vertex<E> finalNext = next;
+            Edge<E> nextEdge = next.edgeList.stream().filter(x -> !x.vertex.visited || x.vertex.degree > finalNext.degree + 1).findFirst().orElse(null);
+            if (nextEdge != null) {
+                nextEdge.vertex.previousVertex = next;
+                nextEdge.vertex.degree = next.degree + 1;
+                next = nextEdge.vertex;
+                next.visited = true;
+
+                if (!retList.contains(next)) {
+                    retList.add(next);
+                }
+
+                if (next.degree == d) {
+                    next = next.previousVertex;
+                }
+            } else {
+                next = next.previousVertex;
+            }
+        }
+
+        // print(vs, vt);
+        clear(s);
+        return retList;
     }
 
     static class Vertex<E> {
@@ -88,6 +195,7 @@ public class GraphCom<E> { // 无向图
         boolean visited;//标识顶点是否已访问
         Vertex<E> previousVertex;//该顶点的前驱顶点
         double cost;//顶点的权值,与边的权值要区别开来
+        int degree;//度，是查询顶点的？度
 
         Vertex(E label) {
             this.label = label;
@@ -98,6 +206,10 @@ public class GraphCom<E> { // 无向图
             this.label = label;
             edgeList = new LinkedList<>();
             edgeList.add(edge);
+        }
+
+        public String toString() {
+            return label.toString();
         }
     }
 
@@ -143,6 +255,23 @@ public class GraphCom<E> { // 无向图
         gp.addEdge("M", "P");
         gp.addEdge("G", "I");
 
-        gp.bfs("B", "O");
+        String s = "A", t = "I";
+
+        System.out.println("------从" + s + "->" + t + "的广度优先遍历----");
+        gp.bfs(s, t);
+
+        System.out.println();
+        System.out.println("------从" + s + "->" + t + "的深度优先遍历----");
+        gp.dfs(s, t);
+
+
+        int de = 5;
+        System.out.println();
+        System.out.println("----------求A的" + de + "度好友:--（广度优先实现）---");
+        System.out.println(gp.degreeBybfs("A", de));
+
+        System.out.println();
+        System.out.println("----------求A的" + de + "度好友:--（深度优先实现）---");
+        System.out.println(gp.degreeBydfs("A", de));
     }
 }
