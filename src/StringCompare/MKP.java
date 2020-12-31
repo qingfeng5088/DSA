@@ -22,6 +22,34 @@ public class MKP {
         return -1;
     }
 
+    public static int qiukmp(char[] a, char[] b) {
+        int n = a.length;
+        int m = b.length;
+        char first = b[0];
+        int[] next = getNexts(b);
+        int j = 0;
+        for (int i = 0; i < n; ++i) {
+            while (j > 0 && a[i] != b[j]) { // 一直找到a[i]和b[j]
+                j = next[j - 1] + 1;
+            }
+            if (a[i] == b[j]) {
+                ++j;
+            }
+            if (j == 0) {
+                if (a[i] != first) {
+                    while (++i <= (n-m +1) && a[i] != first) ;
+                    i--;
+                    continue;
+                }
+            }
+
+            if (j == m) { // 找到匹配模式串的了
+                return i - m + 1;
+            }
+        }
+        return -1;
+    }
+
     private static int[] getNexts(char[] b) {
         int m = b.length;
         int[] next = new int[m];
@@ -44,6 +72,6 @@ public class MKP {
         char[] b = "ababacd".toCharArray();
         System.out.println(Arrays.toString(getNexts(b)));
         System.out.println("--------------mkp算法计算结果---------");
-        System.out.println(kmp(a,b));
+        System.out.println(kmp(a, b));
     }
 }

@@ -8,7 +8,7 @@ public class RK {
     static String mainStr = "";
     static char[] mainChars;
 
-    static String searchStr = "kjsadfwakjoq";
+    static String searchStr = "gdfetge";
     static char[] searchChars;
     static long[] pow26 = new long[searchStr.length()];
 
@@ -22,6 +22,9 @@ public class RK {
 
         System.out.println("-----------MKP 开始计时-----------------");
         Utils.countTime(RK::myMKP);
+
+        System.out.println("-----------myMKP2 开始计时-----------------");
+        Utils.countTime(RK::myMKP2);
 
         System.out.println("-----------Sunday 开始计时-----------------");
         Utils.countTime(RK::mySunday);
@@ -84,6 +87,10 @@ public class RK {
     static void myMKP() {
         int ret = MKP.kmp(mainChars, searchChars);
         System.out.println("----MKP计算出的位置:" + ret);
+    }
+    static void myMKP2() {
+        int ret = MKP.qiukmp(mainChars, searchChars);
+        System.out.println("----myMKP2计算出的位置:" + ret);
     }
 
     static void mySunday() {
