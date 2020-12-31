@@ -8,7 +8,7 @@ public class RK {
     static String mainStr = "";
     static char[] mainChars;
 
-    static String searchStr = "abcegk";
+    static String searchStr = "kjsadfwakjoq";
     static char[] searchChars;
     static long[] pow26 = new long[searchStr.length()];
 
@@ -16,32 +16,101 @@ public class RK {
         System.out.println("-----------开始匹配字符串准备时间------");
         Utils.countTime(RK::init);
 
-
+        System.out.println("===================================================");
         System.out.println("-----------RK 开始计时-----------------");
-        Utils.countTime(RK::mySearch);
+        Utils.countTime(RK::myRK);
+
+        System.out.println("-----------MKP 开始计时-----------------");
+        Utils.countTime(RK::myMKP);
+
+        System.out.println("-----------Sunday 开始计时-----------------");
+        Utils.countTime(RK::mySunday);
+
+        System.out.println("-----------BF 开始计时-----------------");
+        Utils.countTime(RK::myBF);
+
+        System.out.println("-----------myKipToFirst 开始计时-----------------");
+        Utils.countTime(RK::myKipToFirst);
 
         System.out.println("-----------JAVA API开始计时-----------------");
         Utils.countTime(RK::CountSubString);
 
     }
 
-    static void mySearch() {
-        int count = 0;
-        for (int i = 1; i < (mainStr.length() - searchStr.length()); i++) {
-            preHC = strHash(i);
-            if (preHC == searchHC) {
-                boolean isOK = true;
-                for (int i1 = 0; i1 < searchChars.length; i1++) {
-                    if (searchChars[i1] != mainChars[i + i1]) {
-                        isOK = false;
-                        break;
-                    }
-                }
+    static void myBF() {
+        int slen = searchStr.length();
+        int max = mainStr.length() - slen + 1;
+        for (int i = 0; i < max; i++) {
+            int j = 0;
+            for (; j < slen && mainChars[i + j] == searchChars[j]; j++) ;
+            if (j == slen) {
+                System.out.println("----BF计算出的位置:" + i);
+                return;
+            }
+        }
 
-                if (isOK) {
-                    System.out.println(i);
+        System.out.println("----BF 不好意思没找到！");
+    }
+
+    static void myKipToFirst() {
+        char first = searchChars[0];
+        int slen = searchChars.length;
+        int mlen = mainChars.length;
+        int max = (mlen - slen);
+        for (int i = 0; i <= max; i++) {
+            // Look for first character.
+            if (mainChars[i] != first) {
+                while (++i <= max && mainChars[i] != first) ;
+            }
+            // Found first character, now look at the rest of value
+            if (i <= max) {
+                int j = i + 1;
+                int end = j + slen - 1;
+                int k = 1;
+                for (; j < end && mainChars[j] == searchChars[k]; j++, k++) ;
+                i = i + k;
+
+                if (j == end) {
+                    // Found whole string.
+                    System.out.println("----myKipToFirst计算出的位置:" + (i - k));
                     return;
                 }
+            }
+        }
+
+        System.out.println("----myKipToFirst 不好意思没找到！");
+    }
+
+    static void myMKP() {
+        int ret = MKP.kmp(mainChars, searchChars);
+        System.out.println("----MKP计算出的位置:" + ret);
+    }
+
+    static void mySunday() {
+        Sunday.Sunday(mainChars, searchChars);
+    }
+
+    static void myRK() {
+        int count = 0;
+        int max = mainStr.length() - searchStr.length();
+        for (int i = 1; i < max; i++) {
+            preHC = strHash(i);
+            if (preHC == searchHC) {
+                System.out.println(i);
+                return;
+
+//                boolean isOK = true;
+//                for (int i1 = 0; i1 < searchChars.length; i1++) {
+//                    if (searchChars[i1] != mainChars[i + i1]) {
+//                        isOK = false;
+//                        break;
+//                    }
+//                }
+//
+//                if (isOK) {
+//                    System.out.println(i);
+//                    return;
+//                }
             }
         }
 
@@ -58,7 +127,7 @@ public class RK {
     static long searchHC = 0;
 
     static void init() {
-        mainStr = Utils.getRandomString(count);
+        mainStr = "acadabababhmnababacoxyz" + Utils.getRandomString(count) + "asdfewfwafewfreghsd" + searchStr + "sdfasfkw2f";
         mainChars = mainStr.toCharArray();
         searchChars = searchStr.toCharArray();
 
