@@ -135,6 +135,32 @@ public class AhoCorasick {
         return rpList;
     }
 
+    private static String getReplacedString(String str, String mark, List<ReplaceInfo> rpList) {
+        String repStr;
+        StringBuilder sb = new StringBuilder();
+
+        int start = 0;
+        for (ReplaceInfo replaceInfo : rpList) {
+            if (start > replaceInfo.start && start < replaceInfo.end) {
+                sb.append(mark.repeat(replaceInfo.end - start));
+            } else {
+                sb.append(str, start, replaceInfo.start);
+                sb.append(mark.repeat(replaceInfo.end - replaceInfo.start));
+            }
+            start = replaceInfo.end;
+        }
+
+        if (rpList.size() == 0) {
+            repStr = str;
+        } else {
+            if (sb.length() < str.length()) {
+                sb.append(str, start, str.length());
+            }
+            repStr = sb.toString();
+        }
+        return repStr;
+    }
+
     public static class ReplaceInfo {
         int start;
         int end;
@@ -155,33 +181,9 @@ public class AhoCorasick {
         AC.buildFailurePointer();
 
         String str = "eeeeeheroeeeeeeeeeeeeehereeeeeeewwwwwwwwwwwhowwwwwwseewwwso";
-        String repStr = "";
         List<ReplaceInfo> rpList = AC.match(str.toCharArray());
 
-        StringBuilder sb = new StringBuilder();
-
-        int start = 0;
-        for (ReplaceInfo replaceInfo : rpList) {
-            if (start > replaceInfo.start && start < replaceInfo.end) {
-                sb.append("*".repeat(replaceInfo.end - start));
-            } else {
-                sb.append(str, start, replaceInfo.start);
-                sb.append("*".repeat(replaceInfo.end - replaceInfo.start));
-            }
-
-            start = replaceInfo.end;
-        }
-
-        if (rpList.size() == 0) {
-            repStr = str;
-        } else {
-            if (sb.length() < str.length()) {
-                sb.append(str, start, str.length());
-            }
-            repStr = sb.toString();
-        }
-
-
+        String repStr = getReplacedString(str,"^", rpList);
         System.out.println("---------------------匹配前的字符串：" + str);
         System.out.println("---------------------匹配后的字符串：" + repStr);
     }
