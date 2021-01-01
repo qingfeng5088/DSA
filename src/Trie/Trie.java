@@ -1,9 +1,6 @@
 package Trie;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Trie 树只是不适合精确匹配查找，这种问题更适合用散列表或者红黑树来解决。 Trie 树比较适合的是查找前缀匹配的字符串
@@ -51,9 +48,8 @@ public class Trie {
 
     public String[] keywordTips(char[] pattern) {
         TrieNode p = root;
-        List<String> allWords = new ArrayList<>();
+        ArrayList<String> allWords = new ArrayList<>();
 
-        String word = "";
         for (char c : pattern) {
             int index = c - 'a';
             if (p.children[index] == null) {
@@ -65,8 +61,7 @@ public class Trie {
         if (p.isEndingChar) allWords.add(String.valueOf(pattern));
         getTipsWord(p, String.valueOf(Arrays.copyOfRange(pattern, 0, pattern.length - 1)), allWords);
 
-        String[] ret = new String[allWords.size()];
-        return allWords.toArray(ret);
+        return allWords.toArray(new String[0]);
     }
 
     private void getTipsWord(TrieNode x, String preWord, List<String> allWords) {
