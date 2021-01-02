@@ -1,6 +1,7 @@
 package BinaryTree;
 
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 public class BinaryTree<E> {
@@ -18,6 +19,10 @@ public class BinaryTree<E> {
 
     public void addRoot(E data) {
         root = new Node<>(data, null, null);
+    }
+
+    public void addRootNode(Node<E> node) {
+        root = node;
     }
 
     public void addLeft(Node<E> node, E data) {
@@ -144,6 +149,24 @@ public class BinaryTree<E> {
     }
 
     /**
+     * 前序遍历 设置哈夫曼编码
+     *
+     * @param rt
+     */
+    public void setHumffmanCode(Node<E> rt) {
+        if (rt == null) {
+            return;
+        }
+
+        if (rt != root) {
+            rt.humffmanCode = rt.getFather().humffmanCode + (rt.isLeft() ? "0" : "1");
+        }
+
+        setHumffmanCode(rt.getLeft());
+        setHumffmanCode(rt.getRight());
+    }
+
+    /**
      * 中序遍历
      *
      * @param rt
@@ -190,9 +213,7 @@ public class BinaryTree<E> {
 
         while (!queue.isEmpty()) {
             Node<E> node = queue.poll();
-
             System.out.print(node.getData() + "->");
-
             Node<E> left = node.getLeft();
             if (left != null) {
                 queue.add(left);
@@ -205,6 +226,33 @@ public class BinaryTree<E> {
         }
     }
 
+    public void leavesOrder(Node<E> rt) {
+        if (rt == null) {
+            return;
+        }
+
+        if (rt.getLeft() == null && rt.getRight() == null) {
+            System.out.print(rt.getData() + "->");
+            return;
+        }
+
+        leavesOrder(rt.getLeft());
+        leavesOrder(rt.getRight());
+    }
+
+    public void getHumffmanCode(Node<E> rt, Map<E, String> codeList) {
+        if (rt == null) {
+            return;
+        }
+
+        if (rt.getLeft() == null && rt.getRight() == null) {
+            codeList.put(rt.getData(), rt.humffmanCode);
+            return;
+        }
+
+        getHumffmanCode(rt.getLeft(), codeList);
+        getHumffmanCode(rt.getRight(), codeList);
+    }
 
     public static void main(String[] args) {
         BinaryTree<String> bt = new BinaryTree<>("A");
@@ -230,6 +278,13 @@ public class BinaryTree<E> {
         System.out.println();
         System.out.println("按层遍历");
         bt.layerOrder(bt.root);
+
+        bt.setHumffmanCode(bt.root);
+        //叶子遍历 A->B->C->D->E->F->G
+        System.out.println();
+        System.out.println("按叶子遍历");
+        bt.leavesOrder(bt.root);
+
 
         System.out.println();
         System.out.println("-----------------打印整颗树----------------------");
@@ -275,7 +330,7 @@ public class BinaryTree<E> {
         bt.addLeft(right11, "L");
         bt.addRight(right11, "M");
 
-        Node<String> right111= right11.getLeft();
+        Node<String> right111 = right11.getLeft();
         bt.addLeft(right111, "TT");
         bt.addRight(right111, "UUU");
 

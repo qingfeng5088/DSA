@@ -5,6 +5,8 @@ public class Node<E> {
     private Node<E> father;
     private Node<E> left;
     private Node<E> right;
+    private boolean isLeft;
+    String humffmanCode = "";
 
     public Node(E data, Node<E> left, Node<E> right) {
         this.data = data;
@@ -49,5 +51,9 @@ public class Node<E> {
 
     public void setRight(Node<E> right) {
         this.right = right;
+    }
+
+    public boolean isLeft() {
+        return father != null && father.left == this;
     }
 }
