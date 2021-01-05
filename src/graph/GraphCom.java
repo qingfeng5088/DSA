@@ -34,7 +34,7 @@ public class GraphCom<E> { // 无向图
     }
 
     private Vertex<E> get(E e) {
-        return this.adj.stream().filter(x -> x.label.equals(e)).findFirst().orElse(null);
+        return this.adj.stream().filter(x -> x.name.equals(e)).findFirst().orElse(null);
     }
 
     /**
@@ -60,7 +60,7 @@ public class GraphCom<E> { // 无向图
                 if (!q.vertex.visited) {
                     q.vertex.previousVertex = w;
 
-                    if (q.vertex.label.equals(t)) {
+                    if (q.vertex.name.equals(t)) {
                         print(vs, q.vertex);
                         clear(s);
                         return;
@@ -118,11 +118,11 @@ public class GraphCom<E> { // 无向图
 
 
     private void print(Vertex<E> s, Vertex<E> t) { // 递归打印s->t的路径
-        if (!s.label.equals(t.label)) {
+        if (!s.name.equals(t.name)) {
             print(s, t.previousVertex);
         }
 
-        System.out.print(t.label + " ");
+        System.out.print(t.name + " ");
     }
 
     public List<Vertex<E>> degreeBybfs(E s, int d) {
@@ -189,43 +189,6 @@ public class GraphCom<E> { // 无向图
         return retList;
     }
 
-    static class Vertex<E> {
-        E label;//标识标点,可以用不同类型来标识顶点如String,Integer....
-        List<Edge<E>> edgeList;//到该顶点邻接点的边,实际以java.util.LinkedList存储
-        boolean visited;//标识顶点是否已访问
-        Vertex<E> previousVertex;//该顶点的前驱顶点
-        double cost;//顶点的权值,与边的权值要区别开来
-        int degree;//度，是查询顶点的？度
-
-        Vertex(E label) {
-            this.label = label;
-            edgeList = new LinkedList<>();
-        }
-
-        Vertex(E label, Edge<E> edge) {
-            this.label = label;
-            edgeList = new LinkedList<>();
-            edgeList.add(edge);
-        }
-
-        public String toString() {
-            return label.toString();
-        }
-    }
-
-    static class Edge<E> {
-        Vertex<E> vertex;// 终点
-        double weight;//权值
-
-        public Edge(Vertex<E> vertex) {
-            this.vertex = vertex;
-        }
-
-        public Edge(Vertex<E> vertex, double weight) {
-            this.vertex = vertex;
-            this.weight = weight;
-        }
-    }
 
     public static void main(String[] args) {
         GraphCom<String> gp = new GraphCom<>();
