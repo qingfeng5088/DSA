@@ -23,8 +23,8 @@ public class GraphCom<E> { // 无向图
 
     public void addEdge(E s, E t) { // 无向图一条边存两次
         Vertex<E> x;
-        Vertex<E> vs = (x = get(s)) == null ? new Vertex<E>(s) : x;
-        Vertex<E> vt = (x = get(t)) == null ? new Vertex<E>(t) : x;
+        Vertex<E> vs = (x = get(s)) == null ? new Vertex<>(s) : x;
+        Vertex<E> vt = (x = get(t)) == null ? new Vertex<>(t) : x;
 
         vs.edgeList.add(new Edge<>(vt));
         vt.edgeList.add(new Edge<>(vs));
@@ -57,16 +57,16 @@ public class GraphCom<E> { // 无向图
             Vertex<E> w = queue.poll();
             for (int i = 0; i < w.edgeList.size(); i++) {
                 Edge<E> q = w.edgeList.get(i);
-                if (!q.vertex.visited) {
-                    q.vertex.previousVertex = w;
+                if (!q.endVertex.visited) {
+                    q.endVertex.previousVertex = w;
 
-                    if (q.vertex.name.equals(t)) {
-                        print(vs, q.vertex);
+                    if (q.endVertex.name.equals(t)) {
+                        print(vs, q.endVertex);
                         clear(s);
                         return;
                     }
-                    q.vertex.visited = true;
-                    queue.add(q.vertex);
+                    q.endVertex.visited = true;
+                    queue.add(q.endVertex);
                 }
             }
         }
@@ -81,10 +81,10 @@ public class GraphCom<E> { // 无向图
 
         Vertex<E> next = vs;
         while (vt != next) {
-            Edge<E> nextEdge = next.edgeList.stream().filter(x -> !x.vertex.visited).findFirst().orElse(null);
+            Edge<E> nextEdge = next.edgeList.stream().filter(x -> !x.endVertex.visited).findFirst().orElse(null);
             if (nextEdge != null) {
-                nextEdge.vertex.previousVertex = next;
-                next = nextEdge.vertex;
+                nextEdge.endVertex.previousVertex = next;
+                next = nextEdge.endVertex;
                 next.visited = true;
             } else {
                 next = next.previousVertex;
@@ -106,11 +106,11 @@ public class GraphCom<E> { // 无向图
             Vertex<E> w = queue.poll();
             for (int i = 0; i < w.edgeList.size(); i++) {
                 Edge<E> q = w.edgeList.get(i);
-                if (q.vertex.visited) {
-                    q.vertex.previousVertex = null;
-                    q.vertex.degree = 0;
-                    q.vertex.visited = false;
-                    queue.add(q.vertex);
+                if (q.endVertex.visited) {
+                    q.endVertex.previousVertex = null;
+                    q.endVertex.degree = 0;
+                    q.endVertex.visited = false;
+                    queue.add(q.endVertex);
                 }
             }
         }
@@ -138,15 +138,15 @@ public class GraphCom<E> { // 无向图
             Vertex<E> finalVs = vs;
 
             vs.edgeList.forEach(x -> {
-                if (!x.vertex.visited) {
-                    queue.add(x.vertex);
-                    x.vertex.visited = true;
+                if (!x.endVertex.visited) {
+                    queue.add(x.endVertex);
+                    x.endVertex.visited = true;
 
                     int de = finalVs.degree + 1;
-                    x.vertex.degree = de;
-                    if (de <= d && !retList.contains(x.vertex)) {
-                        retList.add(x.vertex);
-                        x.vertex.previousVertex = finalVs;
+                    x.endVertex.degree = de;
+                    if (de <= d && !retList.contains(x.endVertex)) {
+                        retList.add(x.endVertex);
+                        x.endVertex.previousVertex = finalVs;
                     }
                 }
             });
@@ -165,11 +165,11 @@ public class GraphCom<E> { // 无向图
         Vertex<E> next = vs;
         while (null != next) {
             Vertex<E> finalNext = next;
-            Edge<E> nextEdge = next.edgeList.stream().filter(x -> !x.vertex.visited || x.vertex.degree > finalNext.degree + 1).findFirst().orElse(null);
+            Edge<E> nextEdge = next.edgeList.stream().filter(x -> !x.endVertex.visited || x.endVertex.degree > finalNext.degree + 1).findFirst().orElse(null);
             if (nextEdge != null) {
-                nextEdge.vertex.previousVertex = next;
-                nextEdge.vertex.degree = next.degree + 1;
-                next = nextEdge.vertex;
+                nextEdge.endVertex.previousVertex = next;
+                nextEdge.endVertex.degree = next.degree + 1;
+                next = nextEdge.endVertex;
                 next.visited = true;
 
                 if (!retList.contains(next)) {

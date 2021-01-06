@@ -2,6 +2,8 @@ package graph;
 
 import utils.Utils;
 
+import java.util.PriorityQueue;
+
 public class test {
 
     public static long count = 12_0000_0000;
@@ -12,6 +14,12 @@ public class test {
         Utils.countTime(test::init);
         System.out.println("-----------开始计时-----------------");
         Utils.countTime(test::CountSubString);
+
+        PriorityQueue queue = new PriorityQueue();
+
+        Vertex<String> v = new Vertex<>("JN");
+
+
     }
 
     static  void init(){

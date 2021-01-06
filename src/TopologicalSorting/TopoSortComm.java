@@ -54,8 +54,8 @@ public class TopoSortComm<E> {
             System.out.print("->" + vt.name);
 
             vt.edgeList.forEach(x -> {
-                x.vertex.degree--;
-                if (x.vertex.degree == 0) queue.add(x.vertex);
+                x.endVertex.degree--;
+                if (x.endVertex.degree == 0) queue.add(x.endVertex);
             });
         }
 
@@ -78,7 +78,7 @@ public class TopoSortComm<E> {
                     vl = qu.pop();
                     System.out.print("->" + vl.name);
                     if (count > 1 && firstName.equals(vl.name)) break;
-                    vl.edgeList.forEach(y -> qu.push(y.vertex));
+                    vl.edgeList.forEach(y -> qu.push(y.endVertex));
                 }
                 System.out.println();
             });
@@ -89,7 +89,7 @@ public class TopoSortComm<E> {
     public void topoSortByDFS() {
         // 通过邻接表生成逆邻接表
         adj.stream().filter(x -> x.edgeList.size() > 0).forEach(x -> {
-            x.edgeList.forEach(y -> y.vertex.inverseEdgeList.add(new Edge<>(x)));
+            x.edgeList.forEach(y -> y.endVertex.inverseEdgeList.add(new Edge<>(x)));
         });
 
         adj.stream().filter(x -> !x.visited).forEach(this::dsf);
@@ -97,9 +97,9 @@ public class TopoSortComm<E> {
 
     private void dsf(Vertex<E> v) {
         v.visited = true;
-        v.inverseEdgeList.stream().filter(x -> !x.vertex.visited).forEach(x -> {
-            x.vertex.visited = true;
-            dsf(x.vertex);
+        v.inverseEdgeList.stream().filter(x -> !x.endVertex.visited).forEach(x -> {
+            x.endVertex.visited = true;
+            dsf(x.endVertex);
         });
         System.out.print("->" + v.name);
     }
