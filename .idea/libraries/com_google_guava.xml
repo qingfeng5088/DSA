@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="org.apache.commons:commons-lang3:3.3.2" type="repository">
+  <library name="com.google.guava" type="repository">
     <properties maven-id="org.apache.commons:commons-lang3:3.3.2" />
     <CLASSES />
     <JAVADOC />

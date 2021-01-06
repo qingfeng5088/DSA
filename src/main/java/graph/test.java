@@ -17,7 +17,7 @@ public class test {
 
         PriorityQueue queue = new PriorityQueue();
 
-        Vertex<String> v = new Vertex<>("JN");
+        graph.Vertex<String> v = new graph.Vertex<>("JN");
 
 
     }

@@ -135,7 +135,7 @@ public class ShortestPath<E> {// 有向有权图的邻接表表示
         shortestPath.addEdge("地铁A", "地铁B", 21, "地铁");
         shortestPath.addEdge("地铁A", "地铁D", 16, "地铁");
 
-        shortestPath.addEdge("公交站C", "地铁B", 4.8, "步行");
+        shortestPath.addEdge("公交站C", "地铁B", 1, "步行(1分钟)");
         shortestPath.addEdge("公交站C", "公交站B", 6, "公交");
         shortestPath.addEdge("公交站C", "公交站F", 14.5, "公交(换乘1.5分钟)");
 
@@ -152,19 +152,21 @@ public class ShortestPath<E> {// 有向有权图的邻接表表示
         shortestPath.addEdge("公交站D", "地铁F", 9.5, "步行");
 
         shortestPath.addEdge("地铁B", "公交站E", 5, "步行");
-        shortestPath.addEdge("地铁B", "地铁G", 14.5, "地铁");
+        shortestPath.addEdge("地铁B", "地铁G", 14.5, "地铁(换乘3分钟)");
 
         shortestPath.addEdge("公交站E", "地铁F", 6, "步行");
         shortestPath.addEdge("公交站E", "地铁G", 15, "步行");
 
         shortestPath.addEdge("地铁C", "地铁F", 10, "地铁");
 
-        shortestPath.addEdge("地铁F", "地铁G", 7, "地铁");
+        shortestPath.addEdge("地铁F", "地铁G", 7, "地铁(换乘3分钟)");
 
         shortestPath.addEdge("公交站F", "地铁G", 1.5, "步行(1.5分钟)");
         shortestPath.addEdge("公交站F", "公司", 8, "步行");
 
         shortestPath.addEdge("地铁G", "公司", 5, "步行(5分钟)");
+
+       shortestPath.addEdge("公交站A", "公交站D", 16, "公交(换乘1.5分钟)");
 
         // 执行最短时间路径算法
         shortestPath.dijkstra("家", "公司");
