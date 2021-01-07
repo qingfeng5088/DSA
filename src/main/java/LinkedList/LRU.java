@@ -1,5 +1,6 @@
 package LinkedList;
 
+
 public class LRU {
     static final int MAXLENGHT = 10;
     static SingleChainList<String> stringSingleChainList = new SingleChainList<String>();
@@ -15,6 +16,7 @@ public class LRU {
         list1.add("任务25");
         list1.add("任务73");
         System.out.println(list1.toString());
+
         System.out.println("------创建一个单链表------list2--");
         SingleChainList<String> list2 = new SingleChainList<String>();
         list2.add("任务02");
@@ -90,13 +92,12 @@ class SingleChainList<E> {
 
     public void reversal() {
         Node<E> pre = null;
-        Node<E> next = null;
+        Node<E> next = first;
 
-        while (first != null) {
+        while (next != null) {
             next = first.next;
             first.next = pre;
             pre = first;
-            first = next;
         }
 
         first = last;
@@ -249,39 +250,6 @@ class SingleChainList<E> {
         }
         n.next = last;
     }
-
-
-    static class Node<E> implements Comparable<Node<E>> {
-        private E e;
-        private Node<E> next;
-
-        public Node(E e, Node<E> next) {
-            this.e = e;
-            this.next = next;
-        }
-
-        public E getE() {
-            return e;
-        }
-
-        public void setE(E e) {
-            this.e = e;
-        }
-
-        public Node<E> getNext() {
-            return next;
-        }
-
-        public void setNext(Node<E> next) {
-            this.next = next;
-        }
-
-        @Override
-        public int compareTo(Node<E> o) {
-            return ((String) this.e).compareTo((String) o.e);
-        }
-    }
-
 
 }
 

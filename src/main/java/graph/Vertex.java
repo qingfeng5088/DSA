@@ -18,6 +18,10 @@ public class Vertex<E> implements Cloneable {
     public int degree;//度，是查询顶点的？度,如：入度
     public Vertex<E> shortestPreVertex;//到这个顶点最近的前个顶点
 
+    public Vertex() {
+
+    }
+
     public Vertex(E name) {
         this.id = IdUtils.getIncreaseIdByNanoTime();
         this.name = name;
@@ -25,9 +29,9 @@ public class Vertex<E> implements Cloneable {
         inverseEdgeList = new LinkedList<>();
     }
 
-    public Vertex(E label, Edge<E> edge) {
+    public Vertex(E name, Edge<E> edge) {
         this.id = IdUtils.getIncreaseIdByNanoTime();
-        this.name = label;
+        this.name = name;
         edgeList = new LinkedList<>();
         edgeList.add(edge);
     }
