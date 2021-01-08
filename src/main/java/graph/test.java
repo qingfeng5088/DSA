@@ -9,7 +9,11 @@ public class test {
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println("--||"+(-6)*(6));
+    
+        System.out.println("--------------测试-------------");
+    
     }
+    
 
     static  void init(){
         aaa = Utils.getRandomString(count);
@@ -17,5 +21,6 @@ public class test {
 
     static void CountSubString() {
         System.out.println(aaa.indexOf("asfwge"));
+      
     }
 }
