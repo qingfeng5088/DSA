@@ -40,6 +40,7 @@ public class TrieTree<E> {
     }
 
     public List<List<E>> search(List<E> pattern) {
+        pattern = new ArrayList<>(pattern);
         TrieNode<E> p = root;
         List<List<E>> allWords = new ArrayList<>();
 
@@ -78,7 +79,7 @@ public class TrieTree<E> {
         });
     }
 
-    private static List<Character> getList(String str) {
+    public static List<Character> getList(String str) {
         List<Character> retList = new ArrayList<>();
         for (char c : str.toCharArray()) {
             retList.add(c);
@@ -87,7 +88,7 @@ public class TrieTree<E> {
         return retList;
     }
 
-    private static <E> String ListToString(List<E> list) {
+    public static <E> String ListToString(List<E> list) {
         StringBuilder result = new StringBuilder();
         for (E e : list) {
             result.append(e);

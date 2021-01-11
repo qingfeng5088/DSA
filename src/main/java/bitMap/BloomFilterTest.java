@@ -16,6 +16,7 @@ public class BloomFilterTest {
         double fpp = 0.008;
         BloomFilter<String> bloomFilter = BloomFilter.create(Funnels.stringFunnel(Charset.defaultCharset()), insertions, fpp);
 
+
         // 随机生成数据，并添加到布隆过滤器中（将预期数据量全部塞满）
         // 同时也创建一个List集合，将布隆过滤器中预期数据的十分之一存储到该List中
         List<String> lists_1 = new ArrayList<>();
